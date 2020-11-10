@@ -15,7 +15,7 @@ Accounting for all these assignment rules can become extremely tedious. Most com
 - Can establish tiers of assignment (i.e. if it doesn't find someone to match exactly, it finds the categorical match)
 - Can easily be jerry-rigged to do something other than owner assignment.
 
-## The Process
+# The Process
 
 # Apps used
 - Zoho CRM
