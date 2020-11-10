@@ -47,42 +47,62 @@ The simple explanation is this: The script will check the form submission for an
 
 Here we'll get into the code itself.
 
+First we get the Representative records from CRM and set a control variable. If 'truerepid' is still "Doesn't Exist" by the end, we will know that there was no exact match found.
+
 ```javascript
 reps = zoho.crm.getRecords("Representatives");
 truerepid = "Doesn't Exist";
+```
+Next we iterate through all the Representatives and get the Assignment Criteria Subform rows. We then iterate through the rows.
+```javascript
 for each  r in reps
 	{
-	rep = zoho.crm.getRecordById("Representatives",p.get("id").toLong());
+	rep = zoho.crm.getRecordById("Representatives",r.get("id").toLong());
 	subs = rep.get("Assignment_Criteria");
 	for each  s in subs
 		{
-		if(ifNull(s.get("Products"),"1").contains(ifNull(input.Products,"1")) && ifNull(s.get("Country"),"2").contains(ifNull(input.Country,"2")) && 			ifNull(s.get("State"),"3").contains(ifNull(input.State,"3")) && ifNull(s.get("Language"),"4").contains(ifNull(input.Language,"4")))
+```
+This is where we get the meat of the script--this If condition will check their answer on the form against all 4 Assignment Criteria columns. If the Form answer matches in all 4 cases then we change our control variable to the Relater User ID, as well as the general RepID variable. If the Assignment Criteria column is empty (null) like in the case of Jay's US States, and is also empty on the form, then you will still get a match because of the ifNull condition on each option.
+```javascript
+		if(ifNull(s.get("Products"),"1").contains(ifNull(input.Products,"1")) && ifNull(s.get("Country"),"2").contains(ifNull(input.Country,"2")) && ifNull(s.get("State"),"3").contains(ifNull(input.State,"3")) && ifNull(s.get("Language"),"4").contains(ifNull(input.Language,"4")))
 			{
-			truerepid = p.get("id");
-			progid = p.get("id");
+			truerepid = r.get("Related_User").get("id");
 			}
+```
+In case there isn't an exact match, we have a second condition that checks for any matches including "ALL". This is how we do 'tiered' acceptance. If there isn't an exact match, we can assign to whoever has "ALL" for the relevant categories.
+```javascript
 		else if(ifNull(s.get("Products"),"1").contains(ifNull(input.Products,"1")) || s.get("Products") = "ALL" && ifNull(s.get("Country"),"2").contains(ifNull(input.Country,"2")) || s.get("Country") = "ALL" && ifNull(s.get("State"),"3").contains(ifNull(input.State,"3")) || s.get("State") = "ALL" && ifNull(s.get("Language"),"4").contains(ifNull(input.Language,"4")) || s.get("Language") = "ALL")
 			{
-			progid = p.get("id");
+			repid = r.get("Related_User).get("id");
 			}
 		}
 	}
-	if(progid = null)
-		{
-		//assign someone by default if the above fails and send an email saying it failed
-		repid = 3501808000000176021;
-		emyowner = "yes";
-		sendmail
-		[
-			from :"adminemail"
-			to :"mainrepemail"
-			subject :"Representative Assignment Failure"
-			message :"The Representative Assignment script just failed at this precise time: " + zoho.currenttime + " for the following combo of 			  Product, Country, State, and Language. " + input.Products + ", " + input.Country + ", " + input.State + ", " + input.Language + "."
-		]
-		}
+```
+We are now out of our loops and can determine which variable to use. If the truerepid was filled out we know there was an exact match and we want to use it. Otherwise we just want to use the general variable which would've come from an 'ALL' match.
+```javascript	
 	if(truerepid != "Doesn't Exist")
 		{
-		progid = truerepid;
+		repid = truerepid;
 		}
 ```
+Now we have our repid and can assign to that Representative when we create the record. 
 
+Lastly we'll add a check to alert us in case there is no match at all.
+```javascript
+if(repid = null)
+	{
+	//assign someone by default if the above fails and send an email saying it failed
+	repid = 3501808000000176021;
+	emyowner = "yes";
+	sendmail
+	[
+		from :"adminemail"
+		to :"mainrepemail"
+		subject :"Representative Assignment Failure"
+		message :"The Representative Assignment script just failed at this precise time: " + zoho.currenttime + " for the following combo of 			  Product, Country, State, and Language. " + input.Products + ", " + input.Country + ", " + input.State + ", " + input.Language + "."
+		]
+	}
+```
+And that's it! Let's run through a few examples to help understand the logic of the assignment.
+
+## Assignment Examples
