@@ -49,40 +49,40 @@ Here we'll get into the code itself.
 
 ```javascript
 reps = zoho.crm.getRecords("Representatives");
-			truerepid = "Doesn't Exist";
-			for each  r in reps
+truerepid = "Doesn't Exist";
+for each  r in reps
+	{
+	rep = zoho.crm.getRecordById("Representatives",p.get("id").toLong());
+	subs = rep.get("Assignment_Criteria");
+	for each  s in subs
+		{
+		if(ifNull(s.get("Products"),"1").contains(ifNull(input.Products,"1")) && ifNull(s.get("Country"),"2").contains(ifNull(input.Country,"2")) && 			ifNull(s.get("State"),"3").contains(ifNull(input.State,"3")) && ifNull(s.get("Language"),"4").contains(ifNull(input.Language,"4")))
 			{
-				rep = zoho.crm.getRecordById("Representatives",p.get("id").toLong());
-				subs = rep.get("Assignment_Criteria");
-				for each  s in subs
-				{
-					if(ifNull(s.get("Products"),"1").contains(ifNull(input.Products,"1")) && ifNull(s.get("Country"),"2") = ifNull(input.Country,"2") && ifNull(s.get("State"),"3") = ifNull(input.State,"3") && ifNull(s.get("County2"),"4").contains(ifNull(input.County,"4")))
-					{
-						theonetrueprogid = p.get("id");
-						progid = p.get("id");
-					}
-					else if(ifNull(s.get("Course_Type"),"1") = ifNull(input.Course_Type,"1") || s.get("Course_Type") = "ALL" || s.get("Course_Type") = "All" || s.get("Course_Type") = "all" && ifNull(s.get("Country"),"2") = ifNull(input.Country,"2") || s.get("Country") = "ALL" || s.get("Country") = "All" || s.get("Country") = "all" && ifNull(s.get("State"),"3") = ifNull(input.State,"3") || s.get("State") = "ALL" || s.get("State") = "All" || s.get("State") = "all" && ifNull(s.get("County2"),"4").contains(ifNull(input.County,"4")) || s.get("County2") = "ALL" || s.get("County2") = "All" || s.get("County2") = "all")
-					{
-						progid = p.get("id");
-					}
-				}
+			truerepid = p.get("id");
+			progid = p.get("id");
 			}
-			if(progid = null)
+		else if(ifNull(s.get("Products"),"1").contains(ifNull(input.Products,"1")) || s.get("Products") = "ALL" && ifNull(s.get("Country"),"2").contains(ifNull(input.Country,"2")) || s.get("Country") = "ALL" && ifNull(s.get("State"),"3").contains(ifNull(input.State,"3")) || s.get("State") = "ALL" && ifNull(s.get("Language"),"4").contains(ifNull(input.Language,"4")) || s.get("Language") = "ALL")
 			{
-				//assign Emy by default if the above fails and send Chad an email saying it failed
-				progownerid = 3501808000000176021;
-				emyowner = "yes";
-				sendmail
-				[
-					from :"emy.swadley@usu.edu"
-					to :"chad@camberdynamics.com"
-					subject :"USU Extension Program Coordinator 2.0 Failure"
-					message :"The Program Coordinator Assignment script just failed at this precise time: " + zoho.currenttime + " for the following combo of Course Type, Country, State, and County. " + input.Course_Type + ", " + input.Country + ", " + input.State + ", " + input.County + "."
-				]
+			progid = p.get("id");
 			}
-			if(theonetrueprogid != "Doesn't Exist")
-			{
-				progid = theonetrueprogid;
-			}
+		}
+	}
+	if(progid = null)
+		{
+		//assign someone by default if the above fails and send an email saying it failed
+		repid = 3501808000000176021;
+		emyowner = "yes";
+		sendmail
+		[
+			from :"adminemail"
+			to :"mainrepemail"
+			subject :"Representative Assignment Failure"
+			message :"The Representative Assignment script just failed at this precise time: " + zoho.currenttime + " for the following combo of 			  Product, Country, State, and Language. " + input.Products + ", " + input.Country + ", " + input.State + ", " + input.Language + "."
+		]
+		}
+	if(truerepid != "Doesn't Exist")
+		{
+		progid = truerepid;
+		}
 ```
 
