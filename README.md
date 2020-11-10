@@ -106,3 +106,31 @@ if(repid = null)
 And that's it! Let's run through a few examples to help understand the logic of the assignment.
 
 ## Assignment Examples
+
+Form Submission 1
+Product: Suntan Lotion
+Country: North Korea
+US State: null
+Language: 日本語
+
+In this case, the script would get the repid of Jay Lim.
+
+Form Submission 2
+Product: Bicycle
+Country: United States
+State: Nevada
+Language: English
+
+In this case, we'd get the repid of Peter Fuller.
+
+You may have thought it would go to Chad Clayton, but it wouldn't because of the State. The script would match with Chad on Product, Country, and Language, but not State. When it went to Peter it wouldn't find an exact match but it'd find an "ALL" match in all four categories, and thus it would return Peter's id.
+
+Form Submission 3
+Product: Model Train
+Country: Japan
+US State: null
+Language: English
+
+This case would also go to Peter because of the Language. Jay is only assigned to 日本語.
+
+Peter here is a catch-all. He will get ANY records that don't have an exact match. He could've just had "Model Train" in Products and "ALL" in everything else and it also would've been a match for example 3 here.
