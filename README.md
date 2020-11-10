@@ -29,7 +29,7 @@ Accounting for all these assignment rules can become extremely tedious. Most com
 
 We'll go into greater detail with some screenshots below.
 
-## 1 and 2 - Create the Module and Subform
+## 1 and 2 - Create the Module and Subform (see Screenshot A in files)
 
 For the module itself you only need basic fields related to assignment. In this case we're just doing a User lookup called 'Related User'. This will be who we ultimately assign records to that match the criteria. We're calling the module 'Representatives'.
 
