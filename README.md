@@ -99,7 +99,7 @@ if(repid = null)
 		to :"mainrepemail"
 		subject :"Representative Assignment Failure"
 		message :"The Representative Assignment script just failed at this precise time: " + zoho.currenttime + " for the following combo of 			  Product, Country, State, and Language. " + input.Products + ", " + input.Country + ", " + input.State + ", " + input.Language + "."
-		]
+	]
 	}
 ```
 And that's it! Let's run through a few examples to help understand the logic of the assignment.
