@@ -43,8 +43,46 @@ Here we've added 3 Representatives and some Assignment Criteria for each. Notice
 
 The simple explanation is this: The script will check the form submission for an exact criteria match and if it finds one it will assign to that Representative. If it doesn't find an exact match, it will choose a categorical match from ALL. We'll run through a few specific examples when we talk about the code below.
 
-## 4 Add the 'criteriamatcher' script to your Creator Form as an 'onSubmit' action (see criteriamatcher in files)
+## 4 Add the 'criteriamatcher' script to your Creator Form as an 'onSubmit' action (see Screenshot C in files)
 
 Here we'll get into the code itself.
 
+```javascript
+reps = zoho.crm.getRecords("Representatives");
+			truerepid = "Doesn't Exist";
+			for each  r in reps
+			{
+				rep = zoho.crm.getRecordById("Representatives",p.get("id").toLong());
+				subs = rep.get("Assignment_Criteria");
+				for each  s in subs
+				{
+					if(ifNull(s.get("Products"),"1").contains(ifNull(input.Products,"1")) && ifNull(s.get("Country"),"2") = ifNull(input.Country,"2") && ifNull(s.get("State"),"3") = ifNull(input.State,"3") && ifNull(s.get("County2"),"4").contains(ifNull(input.County,"4")))
+					{
+						theonetrueprogid = p.get("id");
+						progid = p.get("id");
+					}
+					else if(ifNull(s.get("Course_Type"),"1") = ifNull(input.Course_Type,"1") || s.get("Course_Type") = "ALL" || s.get("Course_Type") = "All" || s.get("Course_Type") = "all" && ifNull(s.get("Country"),"2") = ifNull(input.Country,"2") || s.get("Country") = "ALL" || s.get("Country") = "All" || s.get("Country") = "all" && ifNull(s.get("State"),"3") = ifNull(input.State,"3") || s.get("State") = "ALL" || s.get("State") = "All" || s.get("State") = "all" && ifNull(s.get("County2"),"4").contains(ifNull(input.County,"4")) || s.get("County2") = "ALL" || s.get("County2") = "All" || s.get("County2") = "all")
+					{
+						progid = p.get("id");
+					}
+				}
+			}
+			if(progid = null)
+			{
+				//assign Emy by default if the above fails and send Chad an email saying it failed
+				progownerid = 3501808000000176021;
+				emyowner = "yes";
+				sendmail
+				[
+					from :"emy.swadley@usu.edu"
+					to :"chad@camberdynamics.com"
+					subject :"USU Extension Program Coordinator 2.0 Failure"
+					message :"The Program Coordinator Assignment script just failed at this precise time: " + zoho.currenttime + " for the following combo of Course Type, Country, State, and County. " + input.Course_Type + ", " + input.Country + ", " + input.State + ", " + input.County + "."
+				]
+			}
+			if(theonetrueprogid != "Doesn't Exist")
+			{
+				progid = theonetrueprogid;
+			}
+```
 
