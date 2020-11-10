@@ -91,7 +91,6 @@ Lastly we'll add a check to alert us in case there is no match at all.
 ```javascript
 if(repid = null)
 	{
-	//assign someone by default if the above fails and send an email saying it failed
 	repid = 3501808000000176021;
 	emyowner = "yes";
 	sendmail
@@ -107,28 +106,28 @@ And that's it! Let's run through a few examples to help understand the logic of 
 
 ## Assignment Examples
 
-Form Submission 1
-Product: Suntan Lotion
-Country: North Korea
-US State: null
+Form Submission 1 -- 
+Product: Suntan Lotion,
+Country: North Korea,
+US State: null,
 Language: 日本語
 
 In this case, the script would get the repid of Jay Lim.
 
-Form Submission 2
-Product: Bicycle
-Country: United States
-State: Nevada
-Language: English
+Form Submission 2 -- 
+Product: Bicycle,
+Country: United States,
+State: Nevada,
+Language: English,
 
 In this case, we'd get the repid of Peter Fuller.
 
 You may have thought it would go to Chad Clayton, but it wouldn't because of the State. The script would match with Chad on Product, Country, and Language, but not State. When it went to Peter it wouldn't find an exact match but it'd find an "ALL" match in all four categories, and thus it would return Peter's id.
 
-Form Submission 3
-Product: Model Train
-Country: Japan
-US State: null
+Form Submission 3 -- 
+Product: Model Train,
+Country: Japan,
+US State: null,
 Language: English
 
 This case would also go to Peter because of the Language. Jay is only assigned to 日本語.
