@@ -1,0 +1,32 @@
+reps = zoho.crm.getRecords("Representatives");
+truerepid = "Doesn't Exist";
+for each  r in reps
+	{
+	rep = zoho.crm.getRecordById("Representatives",r.get("id").toLong());
+	subs = rep.get("Assignment_Criteria");
+	for each  s in subs
+		{
+    if(ifNull(s.get("Products"),"1").contains(ifNull(input.Products,"1")) && ifNull(s.get("Country"),"2").contains(ifNull(input.Country,"2")) && ifNull(s.get("State"),"3").contains(ifNull(input.State,"3")) && ifNull(s.get("Language"),"4").contains(ifNull(input.Language,"4")))
+			{
+			truerepid = r.get("Related_User").get("id");
+			}
+      else if(ifNull(s.get("Products"),"1").contains(ifNull(input.Products,"1")) || s.get("Products") = "ALL" && ifNull(s.get("Country"),"2").contains(ifNull(input.Country,"2")) || s.get("Country") = "ALL" && ifNull(s.get("State"),"3").contains(ifNull(input.State,"3")) || s.get("State") = "ALL" && ifNull(s.get("Language"),"4").contains(ifNull(input.Language,"4")) || s.get("Language") = "ALL")
+			{
+			repid = r.get("Related_User).get("id");
+			}
+		}
+	}
+  if(truerepid != "Doesn't Exist")
+		{
+		repid = truerepid;
+		}
+	repid = 3501808000000176021;
+	emyowner = "yes";
+	sendmail
+	[
+		from :"adminemail"
+		to :"mainrepemail"
+		subject :"Representative Assignment Failure"
+		message :"The Representative Assignment script just failed at this precise time: " + zoho.currenttime + " for the following combo of 			  Product, Country, State, and Language. " + input.Products + ", " + input.Country + ", " + input.State + ", " + input.Language + "."
+		]
+	}
