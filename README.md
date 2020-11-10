@@ -17,11 +17,11 @@ Accounting for all these assignment rules can become extremely tedious. Most com
 
 # The Process
 
-# Apps used
+## Apps used
 - Zoho CRM
 - Zoho Creator
 
-# General Steps
+## General Steps
 1. Create Custom Module for Users/Assignees
 2. Make a Subform in that Module with the form's Assignment Criteria as columns
 3. Populate the module with Users and Assignment Criteria subform rows
